@@ -33,7 +33,7 @@ function getRandomDatesInNextTwoWeeks(count) {
 // API 1: Address processing with delay
 app.post('/api/address', async (req, res) => {
     try {
-        const { address, waitTime = 5 } = req.body; // Default wait time is 5 seconds
+        const { address, waitTime = 1 } = req.body; // Default wait time is 1 second
 
         if (!address) {
             return res.status(400).json({ error: 'Address is required' });
