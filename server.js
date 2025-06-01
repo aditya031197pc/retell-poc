@@ -30,23 +30,40 @@ function getRandomDatesInNextTwoWeeks(count) {
     return dates;
 }
 
+// Helper function to extract args from Retell request
+function extractArgs(req) {
+    if (req.body && req.body.args) {
+        return req.body.args;
+    }
+    return req.body;
+}
+
+// Helper function to log request details
+function logRequest(endpoint, req) {
+    console.log(`[${endpoint}] Request received:`, {
+        timestamp: new Date().toISOString(),
+        callId: req.body?.call?.call_id || 'N/A',
+        args: req.body?.args || req.body
+    });
+}
+
 // API 1: Address processing with delay
 app.post('/api/address', async (req, res) => {
     try {
-        console.log('[/api/address] Request received:', {
-            timestamp: new Date().toISOString(),
-            body: req.body
-        });
-
-        const { address, waitTime = 1 } = req.body; // Default wait time is 1 second
+        logRequest('/api/address', req);
+        const args = extractArgs(req);
+        const { address, waitTime = 1 } = args;
 
         if (!address) {
             console.log('[/api/address] Error: Address missing');
             return res.status(400).json({ error: 'Address is required' });
         }
 
+        // Convert waitTime to number if it's a string
+        const waitTimeNum = typeof waitTime === 'string' ? parseFloat(waitTime) : waitTime;
+
         // Wait for specified seconds
-        await new Promise(resolve => setTimeout(resolve, waitTime * 1000));
+        await new Promise(resolve => setTimeout(resolve, waitTimeNum * 1000));
 
         const response = { avm: 200000 };
         console.log('[/api/address] Response:', response);
@@ -60,12 +77,9 @@ app.post('/api/address', async (req, res) => {
 // API 2: Get available dates
 app.post('/api/appointments', (req, res) => {
     try {
-        console.log('[/api/appointments] Request received:', {
-            timestamp: new Date().toISOString(),
-            body: req.body
-        });
-
-        const { name, phoneNumber } = req.body;
+        logRequest('/api/appointments', req);
+        const args = extractArgs(req);
+        const { name, phoneNumber } = args;
 
         if (!name || !phoneNumber) {
             console.log('[/api/appointments] Error: Missing required fields');
@@ -87,12 +101,9 @@ app.post('/api/appointments', (req, res) => {
 // API 3: Get neighborhood property average value
 app.post('/api/neighborhood-avg', async (req, res) => {
     try {
-        console.log('[/api/neighborhood-avg] Request received:', {
-            timestamp: new Date().toISOString(),
-            body: req.body
-        });
-
-        const { address } = req.body;
+        logRequest('/api/neighborhood-avg', req);
+        const args = extractArgs(req);
+        const { address } = args;
 
         if (!address) {
             console.log('[/api/neighborhood-avg] Error: Address missing');
