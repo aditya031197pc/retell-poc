@@ -67,6 +67,25 @@ app.post('/api/appointments', (req, res) => {
     }
 });
 
+// API 3: Get neighborhood property average value
+app.post('/api/neighborhood-avg', async (req, res) => {
+    try {
+        const { address } = req.body;
+
+        if (!address) {
+            return res.status(400).json({ error: 'Address is required' });
+        }
+
+        // Wait for 3 seconds
+        await new Promise(resolve => setTimeout(resolve, 3000));
+
+        // Return mock neighborhood average
+        res.json({ neighborhoodAverage: 300000 });
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 }); 
