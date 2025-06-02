@@ -35,6 +35,7 @@ function extractArgs(req) {
     if (req.body && req.body.args) {
         return req.body.args;
     }
+    console.log('Body received:', req.body);
     return req.body;
 }
 
@@ -118,6 +119,21 @@ app.post('/api/neighborhood-avg', async (req, res) => {
         res.json(response);
     } catch (error) {
         console.error('[/api/neighborhood-avg] Error:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// API 4: Simple value with full request body logging
+app.post('/api/simple-value', (req, res) => {
+    try {
+        // Log the complete request body with proper formatting
+        console.log('[/api/simple-value] Full request body:', JSON.stringify(req.body, null, 2));
+        
+        const response = { value: 100000 };
+        console.log('[/api/simple-value] Response:', response);
+        res.json(response);
+    } catch (error) {
+        console.error('[/api/simple-value] Error:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });

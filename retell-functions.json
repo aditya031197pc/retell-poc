@@ -1,0 +1,111 @@
+{
+  "functions": [
+    {
+      "name": "getPropertyValue",
+      "description": "Get the estimated value (AVM) for a given property address. Waits for 1 second by default.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string",
+            "description": "The full address of the property"
+          },
+          "waitTime": {
+            "type": "number",
+            "description": "Optional: Time to wait in seconds before returning the result",
+            "default": 1
+          }
+        },
+        "required": ["address"]
+      },
+      "url": "https://retell-poc-nine.vercel.app/api/address",
+      "method": "POST",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "avm": {
+            "type": "number",
+            "description": "Estimated property value"
+          }
+        }
+      }
+    },
+    {
+      "name": "getAvailableAppointments",
+      "description": "Get three random available appointment dates in the next two weeks",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the person requesting the appointment"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "Contact phone number"
+          }
+        },
+        "required": ["name", "phoneNumber"]
+      },
+      "url": "https://retell-poc-nine.vercel.app/api/appointments",
+      "method": "POST",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "availableDates": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of available appointment dates"
+          }
+        }
+      }
+    },
+    {
+      "name": "getNeighborhoodAverage",
+      "description": "Get the average property value in the neighborhood. Waits for 3 seconds before responding.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string",
+            "description": "The address to check neighborhood average for"
+          }
+        },
+        "required": ["address"]
+      },
+      "url": "https://retell-poc-nine.vercel.app/api/neighborhood-avg",
+      "method": "POST",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "neighborhoodAverage": {
+            "type": "number",
+            "description": "Average property value in the neighborhood"
+          }
+        }
+      }
+    },
+    {
+      "name": "getSimpleValue",
+      "description": "Get a simple fixed value of 100,000. This endpoint logs the complete request body for debugging.",
+      "parameters": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      },
+      "url": "https://retell-poc-nine.vercel.app/api/simple-value",
+      "method": "POST",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "description": "Fixed value of 100,000"
+          }
+        }
+      }
+    }
+  ]
+} 
